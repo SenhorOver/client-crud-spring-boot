@@ -49,6 +49,15 @@ public class ClientService {
         }
     }
 
+    @Transactional
+    public void delete(Long id) {
+        if(repository.existsById(id)) {
+            repository.deleteById(id);
+            return;
+        }
+        throw new ResourceNotFoundException("Recurso não encontrado");
+    }
+
     private void copyToEntity(ClientDTO dto, Client entity) {
         entity.setName(dto.getName());
         entity.setCpf(dto.getCpf());
@@ -57,7 +66,4 @@ public class ClientService {
         entity.setChildren(dto.getChildren());
     }
 
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
 }

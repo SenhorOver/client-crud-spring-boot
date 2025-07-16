@@ -41,12 +41,8 @@ public class ClientController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody ClientDTO dto) {
-        try {
-            dto = service.update(id, dto);
-            return ResponseEntity.ok(dto);
-        } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Recurso não encontrado");
-        }
+        dto = service.update(id, dto);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping(value = "/{id}")

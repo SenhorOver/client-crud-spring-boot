@@ -2,6 +2,8 @@ package com.srover.client.controllers;
 
 import com.srover.client.dto.ClientDTO;
 import com.srover.client.services.ClientService;
+import com.srover.client.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +41,12 @@ public class ClientController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody ClientDTO dto) {
-        dto = service.update(id, dto);
-        return ResponseEntity.ok(dto);
+        try {
+            dto = service.update(id, dto);
+            return ResponseEntity.ok(dto);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        }
     }
 
     @DeleteMapping(value = "/{id}")
